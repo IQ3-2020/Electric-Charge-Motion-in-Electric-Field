@@ -6,7 +6,6 @@
 package motionelectricfieldsimulation;
 
 import javafx.application.Application;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -21,21 +20,9 @@ public class MotionElectricFieldSimulation extends Application {
     @Override
     public void start(Stage stage){
         
-        SimWindow view = new SimWindow();
-        InputHandler inputHandler = new InputHandler(view);
-        OutputController outputController = new OutputController(view, inputHandler.getValueMap());
-        GraphController graphController = new GraphController(view, inputHandler.getValueMap());
+        MotionSimController controller = new MotionSimController();
         
-        view.input.startButton.setOnAction(((event) -> {
-            inputHandler.onAction();
-            outputController.setLabelValues();
-            graphController.plotAll();
-        }));
-        
-        BorderPane root = new BorderPane(view);
-        
-        
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(controller.getSimWindow());
         stage.setScene(scene);
         
         stage.setResizable(false);
