@@ -5,7 +5,6 @@
  */
 package view;
 
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -13,18 +12,17 @@ import javafx.scene.control.Separator;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 
 /**
  *
  * @author Jeffrey Gan
+ * 
+ * A Pane that has all the Labels necessary for displaying useful variable values.
  */
+
 public class OutputPane extends VBox{
     
-    private Label paneTitle = new Label("OUTPUT");
     private GridPane infoPane = new GridPane();
     
     //initial values
@@ -66,14 +64,11 @@ public class OutputPane extends VBox{
         this.setStyle("-fx-background-color: gainsboro; -fx-font-size: 15;");
         this.setPadding(new Insets(20));
         
-        paneTitle.setStyle("-fx-font-size: 30; -fx-font-weight: bold;");
-        
         ColumnConstraints headerColumn = new ColumnConstraints();
         headerColumn.setPercentWidth(16.0);
         ColumnConstraints otherColumns = new ColumnConstraints();
         otherColumns.setPercentWidth((100.0-16.0)/3.0);
         
-        //infoPane.setGridLinesVisible(true);
         infoPane.setVgap(5);
         infoPane.setMinWidth(750.0); infoPane.setMaxWidth(750.0);
         infoPane.getColumnConstraints().addAll(
@@ -127,7 +122,11 @@ public class OutputPane extends VBox{
         
         this.getChildren().addAll(infoPane);
     }
-    
+    /**
+     * A HBox that contains two Labels
+     * The first Label displays the numerical value
+     * The second Label displays the unit of the value
+     */
     public final class UnitLabel extends HBox{
         private String unit;
         private Double value;
