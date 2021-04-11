@@ -5,12 +5,15 @@
  */
 package motionelectricfieldsimulation;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import view.SimWindow;
 
 /**
  *
  * @author Jeffrey Gan
+ * 
+ * Creates the Data for the GraphPane
  */
 public class GraphController {
     private SimWindow view;
@@ -25,13 +28,14 @@ public class GraphController {
         this.view = view;
         this.valueMap = valueMap;
     }
+    //The group of functions that are called when the "CALCULATE" button is pressed.
     public void plotAll(){
         view.graph.clearData();
         plotPoints();
         plotBoundary();
         setFieldDirection();
     }
-    
+    //Generates the points representing the position of the charged particle during its trajectory
     private void plotPoints(){
         Double posX, posY, time;
         Double prevX = valueMap.get("initPosX");
@@ -39,17 +43,19 @@ public class GraphController {
         Double timeMax = valueMap.get("diffTime");
         boolean xflag = false;
         
-        minX = 0.0;
-        minY = 0.0;
-        maxX = 0.0;
-        maxY = 0.0;
+        double[] xValues = new double[12];
+        double[] yValues = new double[12];
         
+        //If the value of time is undefined, get the trajectory for 100 seconds
         if(timeMax.isInfinite() || timeMax.isNaN()){
             timeMax = 100.0;
         }
         
+        //The number of times to loop
         int limit = 10;
-        for(int i=0; i<=limit; i++){
+        
+        //Generates the position data based on 2D kinematics
+        for(int i=0; i<=limit; i++){ //Loops limit+1 times
             time = i*timeMax/(double)limit;
             
             posX = valueMap.get("initPosX")
@@ -60,18 +66,7 @@ public class GraphController {
                     + valueMap.get("initVelY")*time
                     + 0.5*valueMap.get("accelY")*time*time;
             
-            if(maxX<posX){
-                maxX = posX;
-            }
-            if(maxY<posY){
-                maxY = posY;
-            }
-            if(minX>posX){
-                minX = posX;
-            }
-            if(minY>posY){
-                minY = posY;
-            }
+            
             if(posX.compareTo(prevX) < 0){
                 view.graph.addPositionData1(posX, posY);
                 if(!xflag){
@@ -84,12 +79,24 @@ public class GraphController {
             
             prevX = posX;
             prevY = posY;
+            
+            xValues[i] = posX;
+            yValues[i] = posY;
         }
         
+        Arrays.sort(xValues);
+        Arrays.sort(yValues);
+        minX = xValues[0];
+        maxX = xValues[limit];
+        
+        minY = yValues[0];
+        maxY = yValues[limit];
+        
     }
+    //Sends values for the GraphPane to graph the line representing the final positon boundary.
     private void plotBoundary(){
         boolean isVbound = valueMap.get("isVbound").equals(1.0);
-        Double max = 0.0, min = 0.0;
+        Double max, min;
         if(isVbound){
             min = minY;
             max = maxY;
@@ -102,6 +109,8 @@ public class GraphController {
                 min, max);
         
     }
+    //Sets the direction of the arrows in the FieldPane in the GraphPane
+    //based on the value of the acceleration.
     private void setFieldDirection(){
         double accelX = valueMap.get("accelX");
         double accelY = valueMap.get("accelY");
