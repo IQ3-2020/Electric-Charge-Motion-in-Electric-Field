@@ -11,6 +11,8 @@ import view.SimWindow;
 /**
  *
  * @author Jeffrey Gan
+ * 
+ * Allows for the setting of the values in the Output pane.
  */
 public class OutputController {
     private SimWindow view;
@@ -21,6 +23,9 @@ public class OutputController {
         this.valueMap = valueMap;
     }
     
+    /**
+     * Changes the values of the labels in the Output pane
+     */
     public void setLabelValues(){
         view.output.initPosX.setValue(valueMap.get("initPosX"));
         view.output.initPosY.setValue(valueMap.get("initPosY"));
