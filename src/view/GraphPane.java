@@ -16,6 +16,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Rotate;
+import javafx.util.StringConverter;
 
 /**
  *
@@ -66,6 +67,8 @@ public class GraphPane extends AnchorPane{
         positionData1.getNode().setStyle("-fx-stroke: blue;");
         stopData.getNode().setStyle("-fx-stroke: red; -fx-stroke-width: 5;");
         
+        xAxis.setTickLabelFormatter(new AxisUnitFormatter());
+        yAxis.setTickLabelFormatter(new AxisUnitFormatter());
         xAxis.setAutoRanging(true);
         yAxis.setAutoRanging(true);
         xAxis.setAnimated(false);
@@ -221,5 +224,19 @@ public class GraphPane extends AnchorPane{
             }
         }
         
+    }
+    
+    private class AxisUnitFormatter extends StringConverter<Number>{
+
+        @Override
+        public String toString(Number object) {
+            return String.format("%.3g", object.doubleValue());
+        }
+
+        @Override
+        public Number fromString(String string) {
+            return 0;
+        }
+    
     }
 }
